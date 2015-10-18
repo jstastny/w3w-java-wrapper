@@ -52,6 +52,9 @@ JDK and Maven need to be installed on your system.
   * Run ``mvn package`` in case you do not want to enter your API key for test. Tests requiring API key will be skipped.
   * Under ``target/`` you will find the file ``w3w-java-wrapper-<version>-jar-with-dependencies.jar`` which can be embedded into your Java application
 
+## Build status
+[![Build Status](https://travis-ci.org/jstastny/w3w-java-wrapper.svg)](https://travis-ci.org/jstastny/w3w-java-wrapper)
+
 ## Contributions
 
 Any contribution is warmly welcome:
