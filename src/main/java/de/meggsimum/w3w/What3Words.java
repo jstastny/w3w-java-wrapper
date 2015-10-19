@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -15,7 +16,7 @@ import org.json.JSONObject;
 /**
  * A Java wrapper for the What3Words Web-API.
  *
- * @see http://developer.what3words.com/api/
+ * @see <a href="http://developer.what3words.com/api/">http://developer.what3words.com/api/</a>
  * 
  * @author Christian Mayer, meggsimum
  */
@@ -83,14 +84,14 @@ public class What3Words {
 	 */
 	public double[] wordsToPosition(String[] words, String language) throws IOException,
 				What3WordsException {
-		String url = String.format("%sw3w?key=%s&string=%s.%s.%s&lang=%s" ,this.baseUrl, this.apiKey, words[0], words[1], words[2], language);
+		String url = String.format("%sw3w?key=%s&string=%s.%s.%s&lang=%s" ,this.baseUrl, URLEncoder.encode(this.apiKey, "UTF-8"), URLEncoder.encode(words[0], "UTF-8"), URLEncoder.encode(words[1], "UTF-8"), URLEncoder.encode(words[2], "UTF-8"), language);
 
 		String response = this.doHttpGet(url);
 
 		try {
 			// parse the coordinates out of the JSON
 			JSONObject json = new JSONObject(response);
-			if (json.has("position") == true) {
+			if (json.has("position")) {
 				JSONArray jsonCoords = (JSONArray) json.get("position");
 				double[] coords = new double[2];
 				coords[0] = jsonCoords.getDouble(0);
@@ -141,7 +142,7 @@ public class What3Words {
 	 */
 	public String[] positionToWords(double[] coords, String language)
 		throws What3WordsException, IOException {
-		String url = String.format("%sposition?key=%s&position=%s,%s&lang=%s" ,this.baseUrl, this.apiKey, coords[0], coords[1], language);
+		String url = String.format("%sposition?key=%s&position=%s,%s&lang=%s" ,this.baseUrl, URLEncoder.encode(this.apiKey, "UTF-8"), coords[0], coords[1], language);
 
 		String response = this.doHttpGet(url);
 
@@ -149,7 +150,7 @@ public class What3Words {
 			// parse the words out of the JSON
 			JSONObject json = new JSONObject(response);
 
-			if (json.has("words") == true) {
+			if (json.has("words")) {
 				JSONArray jsonWords = (JSONArray) json.get("words");
 				String[] words = new String[3];
 				words[0] = jsonWords.getString(0);
@@ -191,7 +192,7 @@ public class What3Words {
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				con.getInputStream()));
 		String inputLine;
-		StringBuffer response = new StringBuffer();
+		StringBuilder response = new StringBuilder();
 
 		while ((inputLine = in.readLine()) != null) {
 			response.append(inputLine);

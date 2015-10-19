@@ -104,4 +104,14 @@ public class What3WordsTest extends TestCase {
 		assertTrue(thrown);
 	}
 
+	/**
+	 * Test translating non-ascii words to position.
+	 * Correct URL encoding is required for this to pass.
+	 */
+	public void testNonAsciiCharacters() throws Exception {
+		What3Words w3w = new What3Words(API_KEY, "de");
+		String[] words = {"winkel", "artenschutz","fängen"};
+		w3w.wordsToPosition(words);
+	}
+
 }
